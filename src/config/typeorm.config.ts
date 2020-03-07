@@ -1,12 +1,15 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { User } from 'src/auth/user.entity';
+import { Task } from 'src/tasks/task.entity';
+import { Team } from 'src/teams/team.enitity';
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
-    type: 'postgres',
+    type: 'mysql',
     host: 'localhost',
-    port: 5432,
-    username: 'postgres',
-    password: '123456',
+    port: 3306,
+    username: 'mysqldb',
+    password: '123456789',
     database: 'mytasks',
-    entities: [__dirname + '../entities/*.entity.ts'],
+    entities: [User, Team, Task],
     synchronize: true
 };

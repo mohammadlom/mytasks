@@ -1,13 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AuthResolver } from './auth.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from 'src/entities/user.entity';
-import { Task } from 'src/entities/task.entity';
-import { Team } from 'src/entities/team.enitity';
+import { UsersRepository } from './user.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Task, Team])
+    TypeOrmModule.forFeature([UsersRepository])
   ],
   providers: [AuthResolver],
   exports: [TypeOrmModule]

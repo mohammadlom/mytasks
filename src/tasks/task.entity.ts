@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, OneToMany } from "typeorm";
 import { TaskStatus } from "src/models/task-status.enum";
-import { User } from "./user.entity";
-import { Team } from "./team.enitity";
+import { User } from "../auth/user.entity";
+import { Team } from "../teams/team.enitity";
 
 @Entity()
 export class Task extends BaseEntity {
@@ -14,7 +14,7 @@ export class Task extends BaseEntity {
     @Column()
     body: string;
 
-    @Column('date')
+    @Column('datetime')
     due_date: Date;
 
     @Column({
