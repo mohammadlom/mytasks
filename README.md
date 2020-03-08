@@ -13,7 +13,11 @@
 
 A Self-defined project for managing tasks based on users and teams
 
+#### Using GraphQL and MySQL
+
 ## Installation
+
+> Hint: Install mysql database on your machine and change database config in typeorm.config.ts file before running 
 
 ```bash
 $ npm install
@@ -22,7 +26,7 @@ $ npm install
 ## Running the app
 
 ```bash
-# development
+# development - on localhost:4000
 $ npm run start
 
 # watch mode
