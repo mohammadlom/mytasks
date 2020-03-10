@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, OneToMany } from "typeorm";
 import { TaskStatus } from "src/models/task-status.enum";
-import { User } from "../auth/user.entity";
+import { User } from "../auth/types/user.entity";
 import { Team } from "../teams/team.enitity";
 import { ObjectType, Field, Int } from 'type-graphql';
 

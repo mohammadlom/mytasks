@@ -1,9 +1,9 @@
-import { Resolver } from '@nestjs/graphql';
-import { Query, Mutation, Arg } from 'type-graphql';
+import { Resolver, Args, Query, Mutation } from '@nestjs/graphql';
 import { Task } from './task.entity';
 import { TasksService } from './tasks.service';
+import { CreateTaskInput } from './inputs/create-task.input';
 
-@Resolver()
+@Resolver(Task)
 export class TasksResolver {
 
     constructor(
@@ -15,11 +15,9 @@ export class TasksResolver {
         return this.taskService.getTasks();
     }
 
-    @Mutation(returns => Task)
+    @Mutation(returns => Task, { nullable: true })
     async createTask(
-        @Arg('title') title: string,
-        @Arg('body') body: string,
-        @Arg('due_date', { nullable: true }) due_date: string,
+        @Args('createTaskInput') createTaskInput: CreateTaskInput
     ) {
 
     }

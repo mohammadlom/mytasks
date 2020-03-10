@@ -1,7 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToMany, JoinTable, OneToMany } from 'typeorm';
-import { Team } from '../teams/team.enitity';
-import { Task } from '../tasks/task.entity';
+import { Team } from '../../teams/team.enitity';
+import { Task } from '../../tasks/task.entity';
 import { ObjectType, Field, Int } from 'type-graphql';
+import * as bcrypt from 'bcrypt';
 
 @Entity()
 @ObjectType()
@@ -15,8 +16,10 @@ export class User extends BaseEntity {
     fullName: string;
 
     @Column()
-    @Field()
     password: string;
+
+    @Column()
+    salt: string;
 
     @Column({ unique: true })
     @Field()
@@ -40,5 +43,11 @@ export class User extends BaseEntity {
     @OneToMany(type => Task, task => task.user)
     @Field(type => [Task])
     tasks: Task[];
+
+
+    async validatePassword(password: string): Promise<boolean> {
+        const hash = await bcrypt.hash(password, this.salt);
+        return hash === this.password;
+    }
 
 }
