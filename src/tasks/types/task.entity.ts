@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, OneToMany, ManyToMany } from "typeorm";
 import { TaskStatus } from "src/models/task-status.enum";
-import { User } from "../auth/types/user.entity";
-import { Team } from "../teams/team.enitity";
+import { User } from "../../auth/types/user.entity";
+import { Team } from "../../teams/team.enitity";
 import { ObjectType, Field, Int } from 'type-graphql';
 
 @ObjectType()
@@ -19,8 +19,11 @@ export class Task extends BaseEntity {
     @Field()
     body: string;
 
-    @Column('datetime')
-    @Field()
+    @Column({
+        name: 'due_date',
+        nullable: true
+    })
+    @Field({ nullable: true })
     due_date: Date;
 
     @Column({
@@ -37,7 +40,7 @@ export class Task extends BaseEntity {
     @Field(type => User)
     user: User;
 
-    @OneToMany(type => Team, team => team.tasks)
-    @Field(type => Team)
+    @ManyToOne(type => Team, team => team.tasks)
+    @Field(type => Team, { nullable: true })
     team: Team;
 }

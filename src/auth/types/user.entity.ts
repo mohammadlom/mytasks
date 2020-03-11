@@ -1,15 +1,15 @@
 import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToMany, JoinTable, OneToMany } from 'typeorm';
 import { Team } from '../../teams/team.enitity';
-import { Task } from '../../tasks/task.entity';
+import { Task } from '../../tasks/types/task.entity';
 import { ObjectType, Field, Int } from 'type-graphql';
 import * as bcrypt from 'bcrypt';
 
 @Entity()
 @ObjectType()
 export class User extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    @Field(type => Int)
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    @Field(type => String)
+    id: string;
 
     @Column()
     @Field()
@@ -34,13 +34,14 @@ export class User extends BaseEntity {
     isActive: boolean;
 
     @ManyToMany(type => Team, {
-        eager: true
+        eager: true,
+        cascade: true
     })
     @JoinTable()
     @Field(type => [Team])
     teams: Team[];
 
-    @OneToMany(type => Task, task => task.user)
+    @OneToMany(type => Task, task => task.user, { cascade: true })
     @Field(type => [Task])
     tasks: Task[];
 

@@ -1,5 +1,5 @@
 import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, OneToMany } from "typeorm";
-import { Task } from "../tasks/task.entity";
+import { Task } from "../tasks/types/task.entity";
 import { ObjectType, Field } from "type-graphql";
 
 @Entity()
@@ -13,7 +13,7 @@ export class Team extends BaseEntity {
     @Field()
     name: string;
 
-    @OneToMany(type => Task, task => task.team)
+    @OneToMany(type => Task, task => task.team, { cascade: true })
     @Field(type => [Task])
     tasks: Task[];
 }

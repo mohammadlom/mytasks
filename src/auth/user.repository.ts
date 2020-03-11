@@ -1,5 +1,6 @@
 import { Repository, EntityRepository } from "typeorm";
 import * as bcrypt from 'bcrypt';
+import * as uuid from 'uuid';
 import { User } from "./types/user.entity";
 import { SignUpInput } from "./inputs/signup.input";
 import { InternalServerErrorException } from "@nestjs/common";
@@ -12,11 +13,13 @@ export class UsersRepository extends Repository<User> {
         const { email, password, fullName, mobile } = authCredentialsDto;
 
         const user = new User();
+        user.id = uuid.v4();
         user.fullName = fullName;
         user.mobile = mobile;
         user.email = email;
         user.salt = await bcrypt.genSalt();
         user.password = await this.hashPassword(password, user.salt);
+        user.isActive = true;
 
         try {
             await user.save();
