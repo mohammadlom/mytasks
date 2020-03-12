@@ -7,7 +7,7 @@ import { ObjectType, Field } from "type-graphql";
 export class Team extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     @Field(type => String)
-    id: number;
+    id: string;
 
     @Column({ unique: true })
     @Field()

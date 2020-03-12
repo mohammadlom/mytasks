@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, HttpModule } from '@nestjs/common';
 import { AuthModule } from 'src/auth/auth.module';
 import { TeamsResolver } from './teams.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -8,7 +8,8 @@ import { TeamsService } from './teams.service';
 @Module({
   imports: [
     TypeOrmModule.forFeature([TeamRepository]),
-    AuthModule
+    AuthModule,
+    HttpModule
   ],
   providers: [TeamsResolver, TeamsService],
   exports: [TypeOrmModule]

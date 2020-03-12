@@ -1,6 +1,5 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { Int } from 'type-graphql';
-import { UseGuards } from '@nestjs/common';
+import { UseGuards, HttpService } from '@nestjs/common';
 import { Team } from './team.enitity';
 import { MessageType } from 'src/shared/message.type';
 import { TeamsService } from './teams.service';
@@ -29,7 +28,7 @@ export class TeamsResolver {
         @Args('id') id: string,
         @GetUser() user: User
     ) {
-        return this.teamService.deleteTeam(name, user);
+        return this.teamService.deleteTeam(id, user);
     }
 
     @Mutation(returns => MessageType)
