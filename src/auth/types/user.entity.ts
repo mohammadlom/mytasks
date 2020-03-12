@@ -1,8 +1,9 @@
 import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToMany, JoinTable, OneToMany } from 'typeorm';
+import { ObjectType, Field } from 'type-graphql';
+import * as bcrypt from 'bcrypt';
+import { MinLength } from 'class-validator';
 import { Team } from '../../teams/team.enitity';
 import { Task } from '../../tasks/types/task.entity';
-import { ObjectType, Field, Int } from 'type-graphql';
-import * as bcrypt from 'bcrypt';
 
 @Entity()
 @ObjectType()
@@ -15,6 +16,7 @@ export class User extends BaseEntity {
     @Field()
     fullName: string;
 
+    @MinLength(6)
     @Column()
     password: string;
 

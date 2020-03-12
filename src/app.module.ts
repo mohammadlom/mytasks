@@ -11,11 +11,12 @@ import { AuthModule } from './auth/auth.module';
     GraphQLModule.forRoot({
       autoSchemaFile: 'schema.gql',
       context: ({ req }) => ({ req }),
+      installSubscriptionHandlers: true,
     }),
     TypeOrmModule.forRoot(typeOrmConfig),
     TasksModule,
     TeamsModule,
     AuthModule
-  ]
+  ],
 })
 export class AppModule { }

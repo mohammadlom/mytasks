@@ -4,15 +4,17 @@ import {
     InternalServerErrorException,
     NotFoundException,
     UnauthorizedException,
-    HttpService
+    HttpService,
+    Inject
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { map } from 'rxjs/operators';
+import { PubSubEngine } from 'type-graphql';
 import { TeamRepository } from './team.repository';
 import { Team } from './team.enitity';
 import { MessageType } from 'src/shared/message.type';
 import { User } from 'src/auth/types/user.entity';
 import { UsersRepository } from 'src/auth/user.repository';
-import { map } from 'rxjs/operators';
 
 @Injectable()
 export class TeamsService {
@@ -21,7 +23,8 @@ export class TeamsService {
         private readonly teamRepository: TeamRepository,
         @InjectRepository(UsersRepository)
         private readonly userRepository: UsersRepository,
-        private httpService: HttpService
+        private httpService: HttpService,
+        @Inject('PUB_SUB') private pubSub: PubSubEngine
     ) { }
 
     async createTeam(
@@ -89,10 +92,21 @@ export class TeamsService {
     }
 
     async forecastWeather(city: string) {
-        const apiKey = 'YOUR_API_KEY';
-        const url = `api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
-        return this.httpService.get(url).pipe(
+        const apiKey = '5b398b3332bb397b48f4ae60f1938f0c';
+        // const apiKey = '5b398b3332bb397b48f4ae60f1938f0c';
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+        this.httpService.get(url).pipe(
             map(response => response.data)
+        ).subscribe(
+            (data) => {
+                console.log(data);
+                this.pubSub.publish('weather', {
+                    weather: {
+                        temp: (data.main.temp - 273.15),
+                        feels_like: (data.main.feels_like - 273.15)
+                    }
+                });
+            }
         );
     }
 }
